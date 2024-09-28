@@ -34,9 +34,13 @@ app.post("/placeorder", (req, res) => {
   };
 
   // Define the routing key based on the order name
-  const routingKey = `order.food.${order.name
-    .toLowerCase()
-    .replace(/ /g, "_")}`;
+
+  let oldKeysToSent = order.name.toLowerCase().replace(/ /g, "_");
+  let firstChar = oldKeysToSent[0];
+  const routingKey = `order.food.${firstChar}.${oldKeysToSent}`;
+
+  // let keysToSent = order.name.toLowerCase()[0];
+  // const routingKey = `order.food.${keysToSent}`;
 
   amqp.connect("amqp://localhost", (err0, connection) => {
     if (err0) {
